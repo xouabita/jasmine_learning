@@ -25,3 +25,14 @@ describe 'a simple test' , ->   # suite
 
 Matcher functions
 -----------------
+
+- **toBe**: compare w/ ===
+- **toEqual**: works for simple litteral, objects
+- **toMatch**: matcher for regular expression
+- **toBeDefined**: check if something is defined
+- **toBeUndefined**: check if smth is undefined
+- **toBeNull**: check if smth is null
+- **toBeTruthy & toBeFalsy**: is for boolean casting checking
+- **toContain**: check if an element is in an array
+- **toBeGreaterThan & toBeLessThan**: is for mathematical comparisons
+- **toThrow**: is for testing if a function throw an exception
