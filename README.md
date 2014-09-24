@@ -139,3 +139,62 @@ describe 'toThrow', ->
         expect(foo).not.toThrow
         expect(bar).toThrow
 ```
+
+beforeEach & afterEach
+----------------------
+
+The beforeEach is called before each spec in the `describe` is run.
+
+#### Example:
+
+```coffee
+describe 'beforeEach & afterEach', ->
+    describe 'beforeEach', ->
+        foo = 0               # init the variable foo w/ 0
+        beforeEach ->         # will be call before each spec ("it")
+            foo += 1
+
+        # Here beforeEach is called and foo have a value of 1
+        it 'foo should be 1', ->
+            expect(foo).toEqual 1
+
+        # beforeEach is called, and foo have a value of 2
+        it 'foo should not be equal to 1, but 2', ->
+            expect(foo).not.toEqual 1
+            expect(foo).toEqual 2
+
+    describe 'afterEach', ->
+        # to reset the value after each spec, we can use afterEach
+        # afterEach is called once after each specs
+        foo = 0
+        beforeEach ->
+            foo += 1
+        afterEach ->
+            foo = 0
+
+        # beforeEach is called, foo have a value of 1
+        it 'foo should be equal to 1', ->
+            expect(foo).toEqual 1
+        # afterEach is called, foo is reset to 0
+
+        it 'foo should still have a value of 1', ->
+            expect(foo).toEqual 1
+```
+
+We can also use `this` to share variables between specs.
+
+#### Example:
+
+`coffee
+describe 'usage of the "this" keyword', ->
+    beforeEach ->
+        this.foo = 0
+
+    it 'can use the "this" to share state', ->
+        expect(this.foo).toEqual 0
+        this.bar = "foobarlol"
+
+    it 'create an empty "this" before each spec', ->
+        expect(this.foo).toEqual 0
+        expect(this.bar).toBeUndefined
+`
