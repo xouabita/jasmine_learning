@@ -155,3 +155,54 @@ describe 'Jasmine learning', ->
                 pending()
                 return
 
+    describe 'Spies', ->
+        describe 'A Spy', ->
+            foo = null
+            bar = null
+
+            beforeEach ->
+                foo =
+                    setBar: (value) -> 
+                        bar = value
+                        return
+
+                spyOn foo, 'setBar' # Set a spy on foo.setBar
+                foo.setBar 123
+                foo.setBar 456, 'another param'
+                return
+
+            it 'tracks that the spy was called', ->
+                expect(foo.setBar).toHaveBeenCalled
+
+            it 'tracks all the arguments of its call', ->
+                expect(foo.setBar).toHaveBeenCalledWith 123
+                expect(foo.setBar).toHaveBeenCalledWith 456, 'another param'
+
+            it 'stops all execution on a function', ->
+                expect(bar).toBeNull
+
+        describe 'A spy, when configured to call through', ->
+            foo        = undefined
+            bar        = undefined
+            fetchedBar = undefined
+
+            beforeEach ->
+                foo =
+                    setBar: (value) ->
+                        bar = value
+                        return
+                    getBar: -> bar
+                spyOn(foo, 'getBar').and.callThrough() # Be careful w/ parenthesis
+
+                foo.setBar(123)
+                fetchedBar = foo.getBar()
+                return
+
+            it 'tracks that the spy was called', ->
+                expect(foo.getBar).toHaveBeenCalled
+            it 'should not effect other functions', ->
+                expect(bar).toEqual 123
+            it 'when called, return the requested value', ->
+                expect(fetchedBar).toEqual 123
+
+        

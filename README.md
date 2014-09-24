@@ -229,3 +229,8 @@ describe 'Disabled suites and pending specs', ->
             pending()
             return
 ```
+
+Spies
+-----
+
+A spy stub a function and track every call to it. 
