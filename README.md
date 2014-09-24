@@ -1,27 +1,27 @@
 Jasmine Learning
 ================
 
-Suite (describe)
-----------------
+### Suite (describe)
 
 - string: title of the suite
 - function: contain a suite of specs
 
-Specification (it)
-------------------
+### Specification (it)
 
 - string: title of the spec
 - function: contain a codeblock w/ expectations. Pass if all expect are true
 
-Expectation (expect)
---------------------
+### Expectation (expect)
 
 Chained w/ matchers function
 
-### exemple
+#### Example:
 
 ```coffee
 describe 'a simple test' , ->   # suite
     it 'should be true' , ->    # specification
         expect(true).toBe true  # expectation
 ```
+
+Matcher functions
+-----------------
