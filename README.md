@@ -185,7 +185,7 @@ We can also use `this` to share variables between specs.
 
 #### Example:
 
-`coffee
+```coffee
 describe 'usage of the "this" keyword', ->
     beforeEach ->
         this.foo = 0
@@ -197,4 +197,4 @@ describe 'usage of the "this" keyword', ->
     it 'create an empty "this" before each spec', ->
         expect(this.foo).toEqual 0
         expect(this.bar).toBeUndefined
-`
+```
