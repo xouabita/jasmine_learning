@@ -1,6 +1,13 @@
 Jasmine Learning
 ================
 
+This is a quick cheatsheet for jasmine.
+You can check the official doc [here](http://jasmine.github.io/2.0/introduction.html).
+
+The tests are written in coffeescript.
+Before to run the tests, you need to install the dependencies (`npm install`).
+Then, just run `gulp` or `gulp test`.
+
 ### Suite (describe)
 
 - string: title of the suite
