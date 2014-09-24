@@ -1,0 +1,29 @@
+{
+  "name": "jasmine_learning",
+  "version": "1.0.0",
+  "description": "Jasmine Learning",
+  "main": "index.js",
+  "dependencies": {
+    "gulp": "^3.8.8",
+    "karma": "^0.12.23",
+    "karma-coffee-preprocessor": "^0.2.1",
+    "karma-jasmine": "~0.2.0",
+    "karma-phantomjs-launcher": "^0.1.4"
+  },
+  "devDependencies": {
+    "coffee-script": "^1.8.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xouabita/jasmine_learning.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xouabita/jasmine_learning/issues"
+  },
+  "homepage": "https://github.com/xouabita/jasmine_learning"
+}
