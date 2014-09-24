@@ -133,3 +133,25 @@ describe 'Jasmine learning', ->
             it 'create an empty "this" before each spec', ->
                 expect(this.foo).toEqual 0
                 expect(this.bar).toBeUndefined
+
+    describe 'Disabled suites and pending specs', ->
+        xdescribe 'This spec will be skipped', ->
+            foo = null
+            beforeEach ->
+                foo = 0
+                foo += 1
+            it 'can be false', -> # not written as skipped in the output
+                expect(foo).toBe 42
+
+        describe 'Pending specs ....', ->
+
+            xit 'can be declared w/ "xit"', -> # written as skipped in the output
+               expect(true).toBeFalse
+
+            it 'can be declared w/ it but w/o a function' # written as skipped in the output
+
+            it 'can be declared by calling "pending" in the spec body', -> # written as skipped in the output
+                expect(true).toBe false
+                pending()
+                return
+
