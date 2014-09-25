@@ -199,3 +199,90 @@ describe 'Jasmine learning', ->
                 # It's because spyOn will not the implementation of the function
                 # We need to add callThrough if we want that the function work
                 expect(baz).toEqual "some text"
+
+        describe 'Chaining functions', ->
+
+            describe 'and.returnValue', ->
+
+                foo = undefined
+                bar = undefined
+                fetchedBar = undefined
+
+                beforeEach ->
+                    foo =
+                        setBar: (value) ->
+                            bar = value
+                            return
+                        getBar: -> bar
+
+                    spyOn(foo,'getBar').and.returnValue 745
+
+                    foo.setBar 123
+                    fetchedBar = foo.getBar()
+                    return
+
+                it 'track that the spy was called', ->
+                    expect(foo.getBar).toHaveBeenCalled
+
+                it 'should not affect other functions', ->
+                    expect(bar).toEqual 123
+
+                it 'when called return the requested value', ->
+                    expect(fetchedBar).toEqual 745
+
+            describe 'and.callFake', ->
+                foo = undefined
+                bar = undefined
+                baz = undefined
+
+                beforeEach ->
+                    foo =
+                        setBar: (value) ->
+                            bar = value
+                            return
+
+                    setBaz = (value) ->
+                        baz = value
+                        return
+
+                    spyOn(foo, 'setBar').and.callFake setBaz
+
+                    foo.setBar 79
+                    return
+
+                it 'should call the fake function that will set baz to 79 and bar should be undefined', ->
+                    expect(bar).toBeUndefined
+                    expect(baz).toEqual 79
+
+            describe 'and.throwError', ->
+                foo = undefined
+                bar = undefined
+
+                beforeEach ->
+                    foo = { setBar: (value) -> bar = value; return }
+
+                    spyOn(foo, 'setBar').and.throwError 'error'
+
+                it 'throw the value', ->
+                    expect( ->
+                        foo.setBar 123
+                    ).toThrowError('error')
+
+            describe 'and.stub', ->
+                foo = null
+                bar = null
+
+                beforeEach ->
+                    foo = { setBar: (value) -> bar = value; return }
+
+                    spyOn(foo, 'setBar').and.callThrough()
+
+                it 'can call through and then stub in the same spec', ->
+                    foo.setBar 69
+                    expect(bar).toEqual 69
+
+                    foo.setBar.and.stub()
+                    bar = null
+
+                    foo.setBar 42
+                    expect(bar).toBeNull
