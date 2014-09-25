@@ -388,3 +388,72 @@ describe 'and.stub', ->
         foo.setBar 42
         expect(bar).toBeNull
 ```
+
+### Other tracking properties
+
+- **.calls.any()**: return false if the spy has not been called at all, and true if
+at least one call happened.
+- **.calls.count()**: return the number of time the spy was called
+- **.calls.argsFor(index)**: return the arguments to call number index
+- **.calls.allArgs()**: returns the arguments to all calls
+
+#### Example:
+
+```coffee
+describe 'Other tracking properties', ->
+
+    foo = null
+    bar = null
+
+    beforeEach ->
+        foo =
+            setBar: (value) ->
+                bar = value
+                return
+        spyOn foo, 'setBar'
+        return
+
+    describe '.calls.any()', ->
+        it 'tracks if it was called at all', ->
+
+            expect(foo.setBar.calls.any()).toBeFalsy
+
+            foo.setBar()
+
+            expect(foo.setBar.calls.any()).toBeTruthy
+
+    describe '.calls.count()', ->
+        it 'count the number of times it was called', ->
+
+            expect(foo.setBar.calls.count()).toEqual 0
+
+            foo.setBar()
+            foo.setBar()
+
+            expect(foo.setBar.calls.count()).toEqual 2
+
+    describe '.calls.argsFor(index)', ->
+        it 'tracks elements of each call', ->
+            foo.setBar 42
+            foo.setBar "hello", "world"
+            foo.setBar
+                lol: "foooooooo"
+                bar: 'mmmhhhhhh'
+
+            expect(foo.setBar.calls.argsFor(0)).toEqual [ 42 ]
+            expect(foo.setBar.calls.argsFor(1)).toEqual [ "hello", "world" ]
+            expect(foo.setBar.calls.argsFor(2)).toEqual [
+                lol: "foooooooo"
+                bar: 'mmmhhhhhh'
+            ]
+
+    describe '.calls.allArgs', ->
+        it 'tracks all the arguments of all calls', ->
+            foo.setBar 42
+            foo.setBar "hello", "world"
+
+            expect(foo.setBar.calls.allArgs()).toEqual [
+                [ 42 ]
+                [ "hello", "world" ]
+            ]
+```
