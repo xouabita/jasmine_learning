@@ -140,6 +140,13 @@ describe 'toThrow', ->
         expect(bar).toThrow
 ```
 
+*There is also two other matchers which are specifics for spy*:
+
+- **toHaveBeenCalled**: to check if the element we are spying have been called
+- **toHaveBeenCalledWith**: to check if an element have been called w/ an argument
+
+You can learn more about them in the [Spies](#spies) section.
+
 beforeEach & afterEach
 ----------------------
 
@@ -230,7 +237,55 @@ describe 'Disabled suites and pending specs', ->
             return
 ```
 
-Spies
------
+<a name="spies"></a> Spies
+--------------------------
 
-A spy stub a function and track every call to it. 
+A spy stub a function and track every call to it.
+You can use two specifics matchers : `toHaveBeenCalled` and `toHaveBeenCalledWith`.
+
+Here is an example to understand how it work:
+
+```coffee
+describe 'a simple spy exemple', ->
+
+    my_awesome_object = undefined
+    bar               = undefined
+    baz               = undefined
+
+    beforeEach ->
+
+        # Let's create an object
+        my_awesome_object =
+            setBar: (value) ->
+                bar = value
+                return
+            setBaz: (value) ->
+                baz = value
+                return
+
+        # Let's create two spies
+        spyOn(my_awesome_object, 'setBar')                  # A simple spy
+        spyOn(my_awesome_object, 'setBaz').and.callThrough() # A spy w/ callThrough
+
+        my_awesome_object.setBar 42
+        my_awesome_object.setBaz "some text"
+
+        return
+
+    it 'should track that the spy was called', ->
+        expect(my_awesome_object.setBar).toHaveBeenCalled
+        expect(my_awesome_object.setBaz).toHaveBeenCalled
+
+    it 'should tracks arguments of its call', ->
+        expect(my_awesome_object.setBar).toHaveBeenCalledWith 42
+        expect(my_awesome_object.setBaz).toHaveBeenCalledWith "some text"
+
+    it 'will show you the difference with and without callThrough', ->
+
+        # When called without callThrough, the bar variable is still undefined
+        expect(bar).toBeUndefined
+
+        # It's because spyOn will not the implementation of the function
+        # We need to add callThrough if we want that the function work
+        expect(baz).toEqual "some text"
+```

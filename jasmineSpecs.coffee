@@ -156,53 +156,46 @@ describe 'Jasmine learning', ->
                 return
 
     describe 'Spies', ->
-        describe 'A Spy', ->
-            foo = null
-            bar = null
+
+        describe 'a simple spy exemple', ->
+
+            my_awesome_object = undefined
+            bar               = undefined
+            baz               = undefined
 
             beforeEach ->
-                foo =
-                    setBar: (value) -> 
-                        bar = value
-                        return
 
-                spyOn foo, 'setBar' # Set a spy on foo.setBar
-                foo.setBar 123
-                foo.setBar 456, 'another param'
-                return
-
-            it 'tracks that the spy was called', ->
-                expect(foo.setBar).toHaveBeenCalled
-
-            it 'tracks all the arguments of its call', ->
-                expect(foo.setBar).toHaveBeenCalledWith 123
-                expect(foo.setBar).toHaveBeenCalledWith 456, 'another param'
-
-            it 'stops all execution on a function', ->
-                expect(bar).toBeNull
-
-        describe 'A spy, when configured to call through', ->
-            foo        = undefined
-            bar        = undefined
-            fetchedBar = undefined
-
-            beforeEach ->
-                foo =
+                # Let's create an object
+                my_awesome_object =
                     setBar: (value) ->
                         bar = value
                         return
-                    getBar: -> bar
-                spyOn(foo, 'getBar').and.callThrough() # Be careful w/ parenthesis
+                    setBaz: (value) ->
+                        baz = value
+                        return
 
-                foo.setBar(123)
-                fetchedBar = foo.getBar()
+                # Let's create two spies
+                spyOn(my_awesome_object, 'setBar')                  # A simple spy
+                spyOn(my_awesome_object, 'setBaz').and.callThrough() # A spy w/ callThrough
+
+                my_awesome_object.setBar 42
+                my_awesome_object.setBaz "some text"
+
                 return
 
-            it 'tracks that the spy was called', ->
-                expect(foo.getBar).toHaveBeenCalled
-            it 'should not effect other functions', ->
-                expect(bar).toEqual 123
-            it 'when called, return the requested value', ->
-                expect(fetchedBar).toEqual 123
+            it 'should track that the spy was called', ->
+                expect(my_awesome_object.setBar).toHaveBeenCalled
+                expect(my_awesome_object.setBaz).toHaveBeenCalled
 
-        
+            it 'should tracks arguments of its call', ->
+                expect(my_awesome_object.setBar).toHaveBeenCalledWith 42
+                expect(my_awesome_object.setBaz).toHaveBeenCalledWith "some text"
+
+            it 'will show you the difference with and without callThrough', ->
+
+                # When called without callThrough, the bar variable is still undefined
+                expect(bar).toBeUndefined
+
+                # It's because spyOn will not the implementation of the function
+                # We need to add callThrough if we want that the function work
+                expect(baz).toEqual "some text"
