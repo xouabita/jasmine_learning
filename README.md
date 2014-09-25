@@ -243,6 +243,12 @@ describe 'Disabled suites and pending specs', ->
 A spy stub a function and track every call to it.
 You can use two specifics matchers : `toHaveBeenCalled` and `toHaveBeenCalledWith`.
 
+The matcher `toHaveBeenCalled` is true if the specific function was called.
+The matcher `toHaveBeenCalledWith` is true if the specific function was called w/ specific arguments.
+
+The spy will not call the implementation of the function which is spied. So you need use chaining
+with `callThrough` to call the function w/ `.and.callThrough()`.
+
 Here is an example to understand how it work:
 
 ```coffee
