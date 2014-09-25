@@ -344,3 +344,31 @@ describe 'Jasmine learning', ->
                         [ "hello", "world" ]
                     ]
 
+        describe 'Matching anything with & partial matching', ->
+
+            describe 'jasmine.any', ->
+                it 'matches any value', ->
+                    expect({}).toEqual jasmine.any(Object)
+                    expect(42).toEqual jasmine.any(Number)
+                it 'is useful for comparing arguments when used w/ a spy', ->
+                    foo = jasmine.createSpy('foo')
+                    foo 12, -> return true
+
+                    expect(foo).toHaveBeenCalledWith jasmine.any(Number), jasmine.any(Function)
+
+        describe 'jasmine.objectContaining', ->
+
+            foo = undefined
+
+            beforeEach ->
+                foo =
+                    a: 1
+                    b: 2
+                    bar: 'baz'
+                return
+
+            it 'matches objects w/ the expect key/value pair', ->
+                expect(foo).toEqual jasmine.objectContaining
+                    bar: 'baz'
+                expect(foo).not.toEqual jasmine.objectContaining
+                    c: false

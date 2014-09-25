@@ -457,3 +457,44 @@ describe 'Other tracking properties', ->
                 [ "hello", "world" ]
             ]
 ```
+
+Matching anything with & Partial Matching
+-----------------------------------------
+
+`jasmine.any` takes a constructor or “class” name as an expected value. It returns true if the constructor matches the constructor
+of the actual value.
+
+`jasmine.objectContaining` is for those times when an expectation only cares about certain key/value pairs in the actual.
+
+#### Example:
+
+```coffee
+describe 'Matching anything with & partial matching', ->
+
+    describe 'jasmine.any', ->
+        it 'matches any value', ->
+            expect({}).toEqual jasmine.any(Object)
+            expect(42).toEqual jasmine.any(Number)
+        it 'is useful for comparing arguments when used w/ a spy', ->
+            foo = jasmine.createSpy('foo')
+            foo 12, -> return true
+
+            expect(foo).toHaveBeenCalledWith jasmine.any(Number), jasmine.any(Function)
+
+describe 'jasmine.objectContaining', ->
+
+    foo = undefined
+
+    beforeEach ->
+        foo =
+            a: 1
+            b: 2
+            bar: 'baz'
+        return
+
+    it 'matches objects w/ the expect key/value pair', ->
+        expect(foo).toEqual jasmine.objectContaining
+            bar: 'baz'
+        expect(foo).not.toEqual jasmine.objectContaining
+            c: false
+```
